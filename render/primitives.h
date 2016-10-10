@@ -186,7 +186,9 @@ struct GraphicsState {
     Vec3<float> position;
     Vec3<float> rotation; // Rotation
     float scale;
-    Texture gl_texture = Texture::SKYBOX;
+    Texture gl_texture;
+
+    GraphicsState(): position{}, rotation{}, scale(1), gl_texture(Texture::SKYBOX) {};
 };
 
 #endif //MEINEKRAFT_PRIMITIVES_H

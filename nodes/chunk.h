@@ -14,7 +14,7 @@ public:
     Vec3<float> position;
     Vec3<float> center_position;
     uint16_t num_blocks;
-    std::vector<std::unique_ptr<Block>> blocks;
+    std::vector<std::shared_ptr<Block>> blocks;
 };
 
 #endif //MEINEKRAFT_CHUNK_H

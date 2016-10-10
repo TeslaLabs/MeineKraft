@@ -8,8 +8,6 @@ class Entity;
 
 class RenderComponent {
 public:
-    uint64_t id;
-    GraphicsState graphics_state;
     Entity *entity;
 
     /// Creates a RenderComponent with the mesh of a obj file
@@ -21,7 +19,13 @@ public:
     // RenderComponent - with sprite file/images/
     void remove_component();
 
+    void update(uint64_t delta);
+
     void set_cube_map_texture(Texture texture);
+
+private:
+    GraphicsState new_graphics_state;
+    GraphicsState *graphics_state;
 };
 
 #endif //MEINEKRAFT_RENDERCOMPONENT_H

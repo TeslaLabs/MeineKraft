@@ -10,4 +10,5 @@ Block::~Block() {
 
 void Block::update(uint64_t delta, const std::shared_ptr<Camera> camera) {
     // TODO: Implement
+    render_comp.update(delta);
 }

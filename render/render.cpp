@@ -194,19 +194,19 @@ void Renderer::render() {
 //        glFrontFace(GL_CCW);
 
         std::vector<Mat4<float>> buffer{};
-        for (auto component : batch.components) {
+        for (auto graphic_state : batch.graphic_states) {
             // Frustrum cullling
-            if (point_inside_frustrum(component.entity->position, planes)) { continue; }
+            if (point_inside_frustrum(graphic_state.position, planes)) { continue; }
 
             // Draw distance
-            auto camera_to_entity = camera->position - component.entity->position;
+            auto camera_to_entity = camera->position - graphic_state.position;
             if (camera_to_entity.length() >= DRAW_DISTANCE) { continue; }
 
-            glBindTexture(GL_TEXTURE_CUBE_MAP, textures[component.graphics_state.gl_texture]);
+            glBindTexture(GL_TEXTURE_CUBE_MAP, textures[graphic_state.gl_texture]);
 
             Mat4<float> model{};
-            model = model.translate(component.entity->position);
-            model = model.scale(component.entity->scale);
+            model = model.translate(graphic_state.position);
+            model = model.scale(graphic_state.scale);
             model = model.transpose();
             buffer.push_back(model);
         }
@@ -276,11 +276,12 @@ void Renderer::update_projection_matrix(float fov) {
     }
 }
 
-uint64_t Renderer::add_to_batch(RenderComponent component, Mesh mesh) {
+GraphicsState *Renderer::add_to_batch(RenderComponent component, Mesh mesh) {
     for (auto &batch : graphics_batches) {
         if (batch.hash_id == component.entity->hash_id) {
-            batch.components.push_back(component);
-            return render_components_id++;
+            batch.graphic_states.emplace_back(GraphicsState{});
+            auto gs_ptr = &batch.graphic_states[batch.graphic_states.size() - 1];
+            return gs_ptr;
         }
     }
 
@@ -327,10 +328,10 @@ uint64_t Renderer::add_to_batch(RenderComponent component, Mesh mesh) {
     GLuint projection = glGetUniformLocation(batch.gl_shader_program, "projection");
     glUniformMatrix4fv(projection, 1, GL_FALSE, projection_matrix.data());
 
-    batch.components.push_back(component);
+    batch.graphic_states.emplace_back(GraphicsState{});
     graphics_batches.push_back(batch);
 
-    return render_components_id++;
+    return &batch.graphic_states[batch.graphic_states.size() - 1];
 }
 
 Mesh Renderer::load_mesh_from_file(std::string filepath) {
@@ -379,17 +380,5 @@ void Renderer::remove_from_batch(RenderComponent component) {
     // TODO: Implement
 }
 
-void Renderer::update_render_component(RenderComponent component) {
-    // TODO: This feels like a bad design, gotta rework it.
-    for (auto &batch : graphics_batches) {
-        if (batch.hash_id == component.entity->hash_id) {
-            for (auto &old_component : batch.components) {
-                if (component.id == old_component.id) {
-                    old_component = component;
-                }
-            }
-        }
-    }
-}
 
 

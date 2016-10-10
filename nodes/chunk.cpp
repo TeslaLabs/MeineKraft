@@ -1,6 +1,6 @@
 #include "chunk.h"
-#include <iostream>
 #include "../math/noise.h"
+#include "../world/world.h"
 
 /// @param world_position World coordinates
 Chunk::Chunk(Vec3<float> world_position, const Noise &noise):
@@ -18,7 +18,7 @@ Chunk::Chunk(Vec3<float> world_position, const Noise &noise):
             // std::cout << " / Noise: " << noise.perlin(X, Z, world_position, dimension);
             // std::cout << " for (x, z) = (" << X << ", " << Z << ")" << std::endl;
             for (auto y = bottom; y < height; y++) {
-                auto block = std::make_unique<Block>();
+                auto block = std::make_shared<Block>();
                 block->position.x = x + position.x;
                 block->position.y = y + position.y;
                 block->position.z = z + position.z;

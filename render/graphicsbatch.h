@@ -3,17 +3,13 @@
 
 #include "primitives.h"
 
-class RenderComponent;
-
 class GraphicsBatch {
 public:
     GraphicsBatch(uint64_t hash_id);
 
     uint64_t hash_id;
     Mesh mesh;
-    std::vector<RenderComponent> components;
-
-    uint64_t gl_cull_mode; //
+    std::vector<GraphicsState> graphic_states;
 
     uint64_t gl_VAO;
     uint64_t gl_models_buffer_object;

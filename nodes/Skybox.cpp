@@ -14,5 +14,5 @@ Skybox::~Skybox() {
 void Skybox::update(uint64_t delta, const std::shared_ptr<Camera> camera) {
     /// Update all components
     position = camera->position;
-    // render_comp.update(delta)
+    render_comp.update(delta);
 }

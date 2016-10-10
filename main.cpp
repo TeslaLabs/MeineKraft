@@ -44,8 +44,8 @@ int main() {
     Skybox skybox{};
     world.add_entity(&skybox);
 
-    Teapot teapot{};
-    world.add_entity(&teapot);
+    //Teapot teapot{};
+    // world.add_entity(&teapot);
 
     bool DONE = false;
     uint32_t last_tick = SDL_GetTicks(), current_tick, delta;

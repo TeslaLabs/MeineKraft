@@ -8,9 +8,8 @@ World::World(uint64_t seed): noise(Noise(seed)) {}
 /// Ticks the world
 void World::world_tick(uint32_t delta, const std::shared_ptr<Camera> camera) {
     for (auto entity : entities) {
-        entity->update(delta, camera);
+       // entity->update(delta, camera);
     }
-    return;
 
     // TODO: Improve or replace the solution below ...
     // Snap Camera/Player to the world coordinate grid
@@ -26,6 +25,9 @@ void World::world_tick(uint32_t delta, const std::shared_ptr<Camera> camera) {
                 if (chunk_exists_at_pos) { continue; }
                 auto chunk = std::make_shared<Chunk>(position, noise);
                 chunks.push_back(chunk);
+                for (auto &block : chunk->blocks) {
+                    add_entity(block.get());
+                }
             }
         }
     }

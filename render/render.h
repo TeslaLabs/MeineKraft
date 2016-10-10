@@ -44,7 +44,7 @@ public:
     Mesh load_mesh_from_file(std::string filepath);
 
     /// Adds the RenderComponent to a internal batch with the same Entity.hash_id
-    uint64_t add_to_batch(RenderComponent component, Mesh mesh);
+    GraphicsState *add_to_batch(RenderComponent component, Mesh mesh);
 
     /// Removes the RenderComponent from a internal batch with the same Entity.hash_id
     void remove_from_batch(RenderComponent component);
